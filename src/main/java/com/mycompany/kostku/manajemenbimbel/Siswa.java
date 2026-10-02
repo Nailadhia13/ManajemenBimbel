@@ -16,16 +16,16 @@ public class Siswa {
     private String mataPelajaran;
     private Mentor mentor;
     private String hari;
-    private int jamMulai;
+    private double jamMulai;
     private int durasiMenit;
 
     public Siswa(String nama, int umur, String mataPelajaran, Mentor mentor,
-                 String hari, int jamMulai) {
+                 String hari, double jamMulai) {
         this(nama, umur, mataPelajaran, mentor, hari, jamMulai, DURASI_DEFAULT);
     }
 
     public Siswa(String nama, int umur, String mataPelajaran, Mentor mentor,
-                 String hari, int jamMulai, int durasiMenit) {
+                 String hari, double jamMulai, int durasiMenit) {
         this.setNama(nama);
         this.setUmur(umur);
         this.setMataPelajaran(mataPelajaran);
@@ -45,15 +45,17 @@ public class Siswa {
 
     public static boolean isHariValid(String hari) {
         for (int i = 0; i < DAFTAR_HARI.length; i++) {
-            if (DAFTAR_HARI[i].equals(hari)) {
+            if (DAFTAR_HARI[i].equalsIgnoreCase(hari)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean isJamValid(int jam) {
-        return jam >= 8 && jam <= 20;
+    public static boolean isJamValid(double jam) {
+        int jamInt = (int) jam;
+        int menitInt = (int) Math.round((jam - jamInt) * 100);
+        return jamInt >= 8 && jamInt <= 20 && menitInt >= 0 && menitInt < 60;
     }
 
     public static boolean isDurasiValid(int menit) {
@@ -122,21 +124,21 @@ public class Siswa {
 
     public void setHari(String hari) {
         if (isHariValid(hari)) {
-            this.hari = hari;
+            this.hari = hari.trim();
         } else {
             System.out.println("[!] Hari harus Senin - Sabtu. Nilai tidak diubah.");
         }
     }
 
-    public int getJamMulai() {
+    public double getJamMulai() {
         return this.jamMulai;
     }
 
-    public void setJamMulai(int jamMulai) {
+    public void setJamMulai(double jamMulai) {
         if (isJamValid(jamMulai)) {
             this.jamMulai = jamMulai;
         } else {
-            System.out.println("[!] Jam mulai harus 8 - 20. Nilai tidak diubah.");
+            System.out.println("[!] Jam mulai harus 8 - 20 (format jam.menit valid). Nilai tidak diubah.");
         }
     }
 
@@ -156,12 +158,12 @@ public class Siswa {
         return totalSiswa;
     }
 
-    public void aturJadwal(String hari, int jamMulai) {
+    public void aturJadwal(String hari, double jamMulai) {
         this.setHari(hari);
         this.setJamMulai(jamMulai);
     }
 
-    public void aturJadwal(String hari, int jamMulai, int durasiMenit) {
+    public void aturJadwal(String hari, double jamMulai, int durasiMenit) {
         this.aturJadwal(hari, jamMulai);
         this.setDurasiMenit(durasiMenit);
     }
@@ -183,9 +185,13 @@ public class Siswa {
     }
 
     public String getJadwal() {
-        int selesaiMenit = this.jamMulai * 60 + this.durasiMenit;
-        return String.format("%s, %02d:00 - %02d:%02d (%d menit)",
-                this.hari, this.jamMulai, selesaiMenit / 60, selesaiMenit % 60, this.durasiMenit);
+        int jamInt = (int) this.jamMulai;
+        int menitInt = (int) Math.round((this.jamMulai - jamInt) * 100);
+        int totalMenitMulai = jamInt * 60 + menitInt;
+        int selesaiMenit = totalMenitMulai + this.durasiMenit;
+        
+        return String.format("%s, %02d:%02d - %02d:%02d (%d menit)",
+                this.hari, jamInt, menitInt, selesaiMenit / 60, selesaiMenit % 60, this.durasiMenit);
     }
 
     public void tampilkanInfo() {

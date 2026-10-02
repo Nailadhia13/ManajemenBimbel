@@ -8,7 +8,7 @@ public class SiswaPrivate extends Siswa {
     private int sesiPerMinggu;
 
     public SiswaPrivate(String nama, int umur, String mataPelajaran, Mentor mentor,
-                        String hari, int jamMulai, String alamatBelajar, int sesiPerMinggu) {
+                        String hari, double jamMulai, String alamatBelajar, int sesiPerMinggu) {
         super(nama, umur, mataPelajaran, mentor, hari, jamMulai);
         this.setAlamatBelajar(alamatBelajar);
         this.setSesiPerMinggu(sesiPerMinggu);

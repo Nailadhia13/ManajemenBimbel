@@ -7,7 +7,7 @@ public class SiswaUmum extends Siswa {
     private String level;
 
     public SiswaUmum(String nama, int umur, String mataPelajaran, Mentor mentor,
-                     String hari, int jamMulai, String ruangLab, String level) {
+                       String hari, double jamMulai, String ruangLab, String level) {
         super(nama, umur, mataPelajaran, mentor, hari, jamMulai);
         this.setRuangLab(ruangLab);
         this.setLevel(level);

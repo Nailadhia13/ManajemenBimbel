@@ -38,23 +38,24 @@ public class ManajemenBimbel {
         return true;
     }
 
-    public Siswa temukanSiswa(int id) {
+    public Siswa temukanSiswa(String id) {
         for (int i = 0; i < this.jumlahSiswa; i++) {
-            if (this.daftarSiswa[i].getId() == id) {
+            if (this.daftarSiswa[i].getKode().equalsIgnoreCase (id) || String . valueOf(this.daftarSiswa[i].getId()).equalsIgnoreCase(id)) {
                 return this.daftarSiswa[i];
             }
         }
         return null;
     }
 
-    public Mentor temukanMentor(int id) {
-        for (int i = 0; i < this.jumlahMentor; i++) {
-            if (this.daftarMentor[i].getId() == id) {
-                return this.daftarMentor[i];
-            }
+    public Mentor temukanMentor(String id) {
+    for (int i = 0; i < this.jumlahMentor; i++) {
+        if (this.daftarMentor[i].getKode().equalsIgnoreCase(id) || 
+            String.valueOf(this.daftarMentor[i].getId()).equalsIgnoreCase(id)) {
+            return this.daftarMentor[i];
         }
-        return null;
     }
+    return null;
+}
 
     public void tampilkanSemuaSiswa() {
         if (this.jumlahSiswa == 0) {
@@ -115,7 +116,7 @@ public class ManajemenBimbel {
         return ditemukan;
     }
 
-    public int cariSiswa(int id) {
+    public int cariSiswa(String id) {
         System.out.println("\nHasil pencarian ID siswa = " + id);
         Siswa hasil = this.temukanSiswa(id);
         if (hasil == null) {
@@ -127,7 +128,7 @@ public class ManajemenBimbel {
         return 1;
     }
 
-    public int cariSiswa(String nama) {
+    public int cariSiswaByNama(String nama) {
         System.out.println("\nHasil pencarian nama mengandung \"" + nama + "\"");
         int ditemukan = 0;
         for (int i = 0; i < this.jumlahSiswa; i++) {
@@ -168,16 +169,8 @@ public class ManajemenBimbel {
                 "Senin", 16, "Zoom", "https://zoom.us/j/1234567890"));
         this.tambahSiswa(new SiswaOnline("Annisa Partiwi", 20, "Pemrograman Python", mPython,
                 "Rabu", 19, "Google Meet", "https://meet.google.com/abc-defg-hij"));
-
         this.tambahSiswa(new SiswaPrivate("Putri Faradilah", 15, "Rekayasa Perangkat Lunak", mRPL,
                 "Selasa", 15, "Jl. Kenanga No. 12", 2));
-        this.tambahSiswa(new SiswaPrivate("Suci Meisyila", 22, "Jaringan Komputer", mJar,
-                "Kamis", 18, "Jl. Melati No. 5", 1));
-
-        this.tambahSiswa(new SiswaUmum("Muhammad Revan Wirawan", 16, "Kompleksitas Algoritma", mKompal,
-                "Sabtu", 9, "Lab 1", "Pemula"));
-        this.tambahSiswa(new SiswaUmum("Ratu Salsabila Humaira", 19, "Sistem Operasi", mOperasi,
-                "Jumat", 14, "Lab 2", "Menengah"));
     }
 
     public static void main(String[] args) {
@@ -187,7 +180,7 @@ public class ManajemenBimbel {
         int pilihan = 0;
 
         do {
-            System.out.println("\n==========================================================");
+            System.out.println("\n============================================================");
             System.out.println("                          BIMBELin                          ");
             System.out.println("============================================================");
             System.out.println("1. Tampilkan Semua Mentor");
@@ -219,42 +212,50 @@ public class ManajemenBimbel {
                 case 3:
                     mb.tampilkanDaftarMataPelajaran();
                     break;
-                case 4:
+               case 4:
                     System.out.println("\n--- TAMBAH SISWA BARU ---");
                     System.out.print("Masukkan Nama: ");
                     String nama = scanner.nextLine();
                     System.out.print("Masukkan Umur: ");
                     int umur = scanner.nextInt();
-                    scanner.nextLine();
-                    
+                    scanner.nextLine(); 
+
                     mb.tampilkanDaftarMataPelajaran();
                     System.out.print("Pilih nomor mata pelajaran atau ketik nama mapel: ");
-                    String mapel = scanner.nextLine();
-                    if (mapel.matches("\\d+")) {
-                        int indexMapel = Integer.parseInt(mapel) - 1;
+                    String inputMapel = scanner.nextLine();
+
+                    Mentor mentorPilihan = null;
+                    String mapel = "";
+
+                    if (inputMapel.matches("\\d+")) {
+                        int indexMapel = Integer.parseInt(inputMapel) - 1;
                         if (indexMapel >= 0 && indexMapel < mb.getJumlahMentor()) {
-                            mapel = mb.daftarMentor[indexMapel].getBidang();
+                            mentorPilihan = mb.daftarMentor[indexMapel];
+                            mapel = mentorPilihan.getBidang();
+                        }
+                    } else {
+                        for (int i = 0; i < mb.getJumlahMentor(); i++) {
+                            if (mb.daftarMentor[i].getBidang().equalsIgnoreCase(inputMapel.trim())) {
+                                mentorPilihan = mb.daftarMentor[i];
+                                mapel = mentorPilihan.getBidang();
+                                break;
+                            }
                         }
                     }
-                    
-                    System.out.println("Pilih Mentor berdasarkan ID:");
-                    mb.tampilkanSemuaMentor();
-                    System.out.print("Masukkan ID Mentor: ");
-                    int idMentor = scanner.nextInt();
-                    scanner.nextLine();
-                    Mentor mentorPilihan = mb.temukanMentor(idMentor);
-                    
+
                     if (mentorPilihan == null) {
-                        System.out.println("[!] Mentor tidak ditemukan. Pembatalan penambahan siswa.");
+                        System.out.println("[!] Mata pelajaran tidak valid. Pembatalan penambahan siswa.");
                         break;
                     }
-                    
+
+                    System.out.println("[Info] Mentor otomatis terpilih: " + mentorPilihan.getNama() + " (" + mentorPilihan.getBidang() + ")");
+
                     System.out.print("Masukkan Hari (Senin-Sabtu): ");
                     String hari = scanner.nextLine();
                     System.out.print("Masukkan Jam Mulai (8-20): ");
-                    int jam = scanner.nextInt();
+                    double jam = scanner.nextDouble();
                     scanner.nextLine();
-                    
+
                     System.out.println("Pilih Tipe Bimbel:");
                     System.out.println("1. Online");
                     System.out.println("2. Private");
@@ -262,7 +263,7 @@ public class ManajemenBimbel {
                     System.out.print("Pilih tipe (1-3): ");
                     int tipeBimbel = scanner.nextInt();
                     scanner.nextLine();
-                    
+
                     boolean statusTambah = false;
                     if (tipeBimbel == 1) {
                         System.out.print("Masukkan Platform (misal: Zoom): ");
@@ -287,21 +288,20 @@ public class ManajemenBimbel {
                         System.out.println("[!] Tipe bimbel tidak valid.");
                         break;
                     }
-                    
+
                     if (statusTambah) {
                         System.out.println("[Sukses] Siswa baru berhasil ditambahkan!");
                     }
                     break;
                 case 5:
                     System.out.print("Masukkan ID Siswa: ");
-                    int idSiswa = scanner.nextInt();
-                    scanner.nextLine();
+                    String idSiswa = scanner.nextLine();
                     mb.cariSiswa(idSiswa);
                     break;
                 case 6:
                     System.out.print("Masukkan Nama Siswa (atau potongan nama): ");
                     String namaSiswa = scanner.nextLine();
-                    mb.cariSiswa(namaSiswa);
+                    mb.cariSiswaByNama(namaSiswa);
                     break;
                 case 7:
                     System.out.print("Masukkan Bidang Mentor: ");

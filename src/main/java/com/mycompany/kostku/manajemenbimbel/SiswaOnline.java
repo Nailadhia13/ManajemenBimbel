@@ -6,8 +6,9 @@ public class SiswaOnline extends Siswa {
     private String platform;
     private String linkKelas;
 
+    // Ubah int jamMulai menjadi double jamMulai di sini
     public SiswaOnline(String nama, int umur, String mataPelajaran, Mentor mentor,
-                       String hari, int jamMulai, String platform, String linkKelas) {
+                       String hari, double jamMulai, String platform, String linkKelas) {
         super(nama, umur, mataPelajaran, mentor, hari, jamMulai);
         this.setPlatform(platform);
         this.setLinkKelas(linkKelas);
