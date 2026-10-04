@@ -123,7 +123,7 @@ public class ManajemenBimbel {
     }
 
     public void cariSiswa(String keyword) {
-        System.out.println("\n[Overloading String] Hasil pencarian dengan kata kunci: \"" + keyword + "\"");
+        System.out.println("\nHasil pencarian dengan kata kunci: \"" + keyword + "\"");
         int ditemukan = 0;
         for (int i = 0; i < this.jumlahSiswa; i++) {
             if (this.daftarSiswa[i].getKode().equalsIgnoreCase(keyword) ||
