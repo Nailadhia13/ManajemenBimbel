@@ -53,6 +53,11 @@ public class SiswaPrivate extends Siswa {
     }
 
     @Override
+    public void caraBelajar() {
+        System.out.println("[-] Simulasi Belajar Private: Mentor datang langsung ke alamat " + this.alamatBelajar + " (" + this.sesiPerMinggu + " sesi/minggu)");
+    }
+
+    @Override
     public void tampilkanInfo() {
         super.tampilkanInfo();
         System.out.printf(" %-15s: %s%n", "Alamat Belajar", this.alamatBelajar);

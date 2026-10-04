@@ -14,7 +14,7 @@ public class SiswaUmum extends Siswa {
     }
 
     public static boolean isLevelValid(String level) {
-        return "Pemula".equals(level) || "Menengah".equals(level) || "Mahir".equals(level);
+        return "Pemula".equalsIgnoreCase(level) || "Menengah".equalsIgnoreCase(level) || "Mahir".equalsIgnoreCase(level);
     }
 
     public String getRuangLab() {
@@ -49,6 +49,11 @@ public class SiswaUmum extends Siswa {
     @Override
     public double hitungBiaya() {
         return super.hitungBiaya() + BIAYA_LAB;
+    }
+
+    @Override
+    public void caraBelajar() {
+        System.out.println("[-] Simulasi Belajar Umum: Melakukan praktik tatap muka di " + this.ruangLab + " dengan level " + this.level);
     }
 
     @Override

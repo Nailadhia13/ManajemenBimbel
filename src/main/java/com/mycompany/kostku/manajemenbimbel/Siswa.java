@@ -184,6 +184,10 @@ public class Siswa {
         return "Siswa";
     }
 
+    public void caraBelajar() {
+        System.out.println("[-] Info Belajar: Siswa mengikuti kegiatan bimbingan belajar standar.");
+    }
+
     public String getJadwal() {
         int jamInt = (int) this.jamMulai;
         int menitInt = (int) Math.round((this.jamMulai - jamInt) * 100);

@@ -6,7 +6,6 @@ public class SiswaOnline extends Siswa {
     private String platform;
     private String linkKelas;
 
-    // Ubah int jamMulai menjadi double jamMulai di sini
     public SiswaOnline(String nama, int umur, String mataPelajaran, Mentor mentor,
                        String hari, double jamMulai, String platform, String linkKelas) {
         super(nama, umur, mataPelajaran, mentor, hari, jamMulai);
@@ -50,6 +49,11 @@ public class SiswaOnline extends Siswa {
     @Override
     public double hitungBiaya() {
         return super.hitungBiaya() * (1 - POTONGAN_ONLINE);
+    }
+
+    @Override
+    public void caraBelajar() {
+        System.out.println("[-] Simulasi Belajar Online: Mengakses ruang virtual " + this.platform + " via link: " + this.linkKelas);
     }
 
     @Override
